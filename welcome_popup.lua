@@ -1,20 +1,30 @@
 local visible = true
+local ouvert = false
+
+function script.update(dt)
+  if visible and not ouvert then
+    ui.openPopup('Bienvenue')
+    ouvert = true
+  end
+end
 
 function script.drawUI()
   if not visible then return end
 
-  ui.beginTransparentWindow(
-    'welcome_popup',
-    vec2(500, 250),
-    vec2(450, 180)
-  )
+  if ui.beginPopupModal(
+    'Bienvenue',
+    true,
+    ui.WindowFlags.AlwaysAutoResize
+  ) then
 
-  ui.text('BIENVENUE SUR LE SERVEUR !')
-  ui.text('Merci de respecter les règles.')
+    ui.text('Bienvenue sur le serveur !')
+    ui.text('Merci de respecter les règles.')
 
-  if ui.button('J’ai compris') then
-    visible = false
+    if ui.button("J'ai compris") then
+      visible = false
+      ui.closePopup()
+    end
+
+    ui.endPopup()
   end
-
-  ui.endTransparentWindow()
 end
